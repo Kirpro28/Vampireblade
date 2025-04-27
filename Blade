@@ -1,0 +1,25 @@
+local player = game.Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 120, 0, 50)
+button.Position = UDim2.new(0.5, -60, 0.9, 0)
+button.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.Text = "DAR"
+button.Font = Enum.Font.GothamBold
+button.TextScaled = true
+button.Parent = screenGui
+
+button.MouseButton1Click:Connect(function()
+    local cuchilloOriginal = replicatedStorage:FindFirstChild("Vampire_Blade")
+    if cuchilloOriginal then
+        local cuchilloClonado = cuchilloOriginal:Clone()
+        cuchilloClonado.Parent = player.Backpack
+    else
+        warn("No se encontró Vampire_Blade.")
+    end
+end)
