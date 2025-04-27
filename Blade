@@ -6,7 +6,7 @@ screenGui.Parent = player:WaitForChild("PlayerGui")
 
 local button = Instance.new("TextButton")
 button.Size = UDim2.new(0, 120, 0, 50)
-button.Position = UDim2.new(0.5, -60, 0.9, 0)
+button.Position = UDim2.new(0, 50, 0, 50)  -- Cambié la posición para moverlo más arriba a la izquierda
 button.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
 button.TextColor3 = Color3.fromRGB(255, 255, 255)
 button.Text = "DAR"
@@ -14,12 +14,37 @@ button.Font = Enum.Font.GothamBold
 button.TextScaled = true
 button.Parent = screenGui
 
+-- Hacer el botón movible
+local dragging = false
+local dragInput, dragStart, startPos
+
+button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = button.Position
+    end
+end)
+
+button.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+button.InputChanged:Connect(function(input)
+    if dragging then
+        local delta = input.Position - dragStart
+        button.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
 button.MouseButton1Click:Connect(function()
-    local cuchilloOriginal = replicatedStorage:FindFirstChild("Vampire_Blade")
+    local cuchilloOriginal = replicatedStorage:FindFirstChild("Vampire Knife")
     if cuchilloOriginal then
         local cuchilloClonado = cuchilloOriginal:Clone()
         cuchilloClonado.Parent = player.Backpack
     else
-        warn("No se encontró Vampire_Blade.")
+        warn("No se encontró Vampire Knife.")
     end
 end)
